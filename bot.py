@@ -57,8 +57,8 @@ def readConfig():
 		"twitter_count": "15",
 
 		"message_prefix": "message_prefix_one_line",
-		"message_suffix": [{"suffix_1", "suffix_2"}],
-		"message_replace": [{"word", "replaceWith"}],
+		"message_suffix": ("suffix_1", "suffix_2"),
+		"message_replace": ("word", "replaceWith"),
 
 		"verbose": "True",
 		"confirm_actions": "True"
@@ -109,7 +109,7 @@ def main():
 	config = readConfig()
 
 	verbose = config['verbose']
-	confirm = config['confirm']
+	confirm = config['confirm_actions']
 	subreddit_name = config['subreddit_name']
 	subreddit_sort = config['subreddit_sort_by']
 	author_name = config['author_name']
@@ -168,20 +168,20 @@ def main():
 			# append the tweet to the message while replacing #RedWings with a space
 			# the twitter user adds #RedWings to the end of every tweet, could get redundant or annoying
 			# newlines for formatting
-			message = message + (str(x.full_text) + "\n\n").replace(message_replace[0], message_replace[1])
+			message = message + (str(x.full_text) + "\n\n").replace(str(message_replace[0]), str(message_replace[1]))
 
 	# after all tweets have been added to message, add this to bottom of message posted to reddit so users have more information about this project as well as the data source
-	for i in message_suffix:
-		message = message + message_suffix[i]
+	for i in range(len(message_suffix)):
+		message = message + str(message_suffix[i]) + "\n"
 
 	# print the message to the screen so the user sees what will be posted on Reddit
 	log(message, verbose)
 
 	# finally post the message on Reddit
-	#//submission.reply(message)
+	submission.reply(message)
 
 	# confirmation dialog
-	#//log("Message posted on Reddit.")
+	log("Message posted on Reddit.")
 	
 # this is necessary, I once forgot this and nothing happened when I ran the program, spent several hours figuring out why
 # pretty self explanatory though
