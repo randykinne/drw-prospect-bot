@@ -28,6 +28,9 @@ pip3 install python-twitter
 ### Installing
 Clone or download the respository.
 
+## Config
+Change the config to fit your needs.
+
 ## Use
 In Terminal or Command Prompt, run the following command in the directory of the repo:
 
@@ -40,9 +43,6 @@ If the config.json file doesn't exist yet, it will be generated.
 Replace each 'x' with the correct values to log into Reddit and Twitter, then run the previous command again. If everything was installed correctly, the program should state the correctly found Reddit thread, as well as list all of the tweets found, and then post the tweets found to the reddit thread.
 
 This command/program will need to be ran again each time it is used.
-
-## Adjustment/Repurpose
-Change the config to fit your needs.
 
 ## Contributing
 Feel free to contribute. When submitting pull requests, include details on changes made.
