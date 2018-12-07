@@ -17,7 +17,7 @@
     ],
     "author_name": "name",
     "confirm_actions": "True",
-    "message_prefix": "message_prefix_one_line",
+    "message_prefix": "message_prefix",
     "message_replace": [
         "word",
         "replaceWith"
@@ -26,9 +26,10 @@
         "suffix_1",
         "suffix_2"
     ],
-    "subreddit_name": "subreddit_name_to_post_to",
-    "subreddit_sort_by": "0_for_hot_1_for_new_2_for_top",
+    "subreddit_name": "subreddit",
+    "subreddit_sort_by": "0",
+    "testing": "False",
     "twitter_count": "15",
-    "twitter_name": "twitter_account_to_get_tweets_from",
+    "twitter_name": "twitter_account",
     "verbose": "True"
 }
