@@ -1,12 +1,9 @@
 ## 
-## twitter-subreddit-bot v1 (12/5/2018)
+## twitter-subreddit-bot v1.0 (12/7/2018) 4:07 PM EST
 ## A twitter-subreddit bot based on DRWProspectsBot
 ## 
 ## by Randy Kinne
 ##
-## TODO: format config default better
-## TODO: add verbose setting in config, then read to determine verbosity
-## TODO: add confirmation setting in config, then read to determine whether a confirmation for bot actions is necessary
 ## TODO: Reformat the printed messages to user
 
 import praw
