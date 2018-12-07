@@ -49,19 +49,20 @@ def readConfig():
 		"consumer_key": "X", 
 		"consumer_secret": "X"}],
 
-		"subreddit_name": "subreddit_name_to_post_to",
-		"subreddit_sort_by": "0_for_hot_1_for_new_2_for_top",
+		"subreddit_name": "subreddit",
+		"subreddit_sort_by": "0",
 		"author_name": "name",
 
-		"twitter_name": "twitter_account_to_get_tweets_from",
+		"twitter_name": "twitter_name",
 		"twitter_count": "15",
 
-		"message_prefix": "message_prefix_one_line",
+		"message_prefix": "message_prefix",
 		"message_suffix": ("suffix_1", "suffix_2"),
 		"message_replace": ("word", "replaceWith"),
 
 		"verbose": "True",
-		"confirm_actions": "True"
+		"confirm_actions": "True",
+		"testing": "True"
 		}
 
 		# create the file, indent=4 and sort_keys=True to add readability to the json file
@@ -96,7 +97,7 @@ def confirm(message):
 	elif (answer == "n" or answer == "no"):
 		return False
 	else:
-		print("Invalid answer. Option(s): y/n")
+		log("Invalid answer. Option(s): y/n", True)
 		return confirm(message)
 ##
 ## @brief      Main function
@@ -118,6 +119,7 @@ def main():
 	message_prefix = config['message_prefix']
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
+	testing = config['testing']
 
 
 	# verbose messages for user
@@ -146,18 +148,32 @@ def main():
 	# set the subreddit name for praw
 	subreddit = reddit.subreddit(subreddit_name)
 
-	# finds the daily reddit post by OctoMod (bot). It's always the 2nd post sorted by hot
-	for submission in subreddit.hot(limit=2):
+	posts = subreddit.hot(limit=1)
+
+	sort_by = config['subreddit_sort_by']
+
+	if (sort_by == '0'):
+		posts = subreddit.hot(limit=5)
+	elif (sort_by == '1'):
+		posts = subreddit.new(limit=5)
+	elif (sort_by == '2'): 
+		posts = subreddit.top(limit=5)
+	else:
+		log("Invalid config! Please change subreddit_sort_by to 0, 1, or 2", True)
+
+
+	for submission in posts:
 		if (submission.author == author_name):
 			# print name of the submission to ensure the name is correct
-
 	 		log("Found submission titled: " + submission.title, verbose)
 
-	# get the user timeline from twitter user 'DRWProspects', they wouldn't post more than 15 in a single day 
+	# get the user timeline from twitter user
 	updates = twitterApi.GetUserTimeline(screen_name=twitter_name, count=twitter_count)
 
+	log("=================== MESSAGE ===================", verbose)
+
 	# preface message with yesterday's results so users know which day the scores happened on, then newline for formatting
-	message = (message_prefix + "\n")
+	message = (message_prefix + "\n\n")
 
 	# get every update from the twitter user
 	for x in updates:
@@ -176,12 +192,14 @@ def main():
 
 	# print the message to the screen so the user sees what will be posted on Reddit
 	log(message, verbose)
+	log("================ END OF MESSAGE =================", verbose)
 
-	# finally post the message on Reddit
-	submission.reply(message)
-
-	# confirmation dialog
-	log("Message posted on Reddit.")
+	# finally post the message on Reddit if not testing
+	if (config['testing']):
+		log("Since this is just a test, we won't actually post it on Reddit.", True)
+	else:
+		submission.reply(message)
+		log("Message posted on Reddit.", verbose)
 	
 # this is necessary, I once forgot this and nothing happened when I ran the program, spent several hours figuring out why
 # pretty self explanatory though
