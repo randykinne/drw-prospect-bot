@@ -16,8 +16,13 @@ python3 -m pip install --upgrade pip
 pip3 will now be updated to version 18.1
 For more information or more help on using pip3, reference [Using pip3 to install Python modules](https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules)
 
-Now install the necessary modules with the following commands:
+Now install the necessary modules individually (manually) or all at once with the following commands:
 
+*Easy Method*
+```
+pip3 install -r requirements.txt
+```
+*Manual/Individual Method*
 ```
 pip3 install praw
 ```
@@ -31,6 +36,27 @@ Clone or download the respository.
 ## Config
 Change the config to fit your needs.
 
+| Parameter            | Type|                Description                           |        Default value             |
+|:--------------------:|:---:|:----------------------------------------------------:|:--------------------------------:|
+| client_id            | str | Your reddit client id                                | X    |
+| client_secret        | str | Your reddit client secret                            | X    |
+| password             | str | Your reddit account password                         | X    |
+| username             | str | Your reddit account username                         | X    |
+| access_key           | str | Your twitter access key                              | X    |
+| access_secret        | str | Your twitter access secret                           | X    |
+| consumer_key         | str | Your twitter consumer key                            | X    |
+| consumer_secret      | str | Your twitter consumer secret                         | X    |
+| author_name          | str | Author of the reddit thread to comment on            | name |
+| confirm_actions      | boo | Boolean value of whether to confirm the bot's actions before they happen | True |
+| message_prefix       | str | Prefix to attach to the twitter updates the bot posts| message_prefix |
+| message_replace      | [str] | Replace text in the tweets. Useful for repetitive hashtags. Can only replace one word with another single word.| ["word", "replaceWith"] |
+| message_suffix       | [str] | Suffix to attach to the twitter updates the bot posts on Reddit.| ["suffix_1", "suffix_2"] |
+| subreddit_name       | str | Name of subreddit to search for posts                | subreddit |
+| subreddit_sort_by    | int | 0 for hot, 1 for new, 2 for top                      | 0  |
+| twitter_count        | int | Number of tweets to get from Twitter. Max limit of time is 30 regardless of the number of tweets getting | 15   |
+| twitter_name         | str | Username of twitter account to pull tweets from      | twitter_name |
+| verbose              | boo | Boolean value of whether to print updates to console. Recommended: True| True |
+
 ## Use
 In Terminal or Command Prompt, run the following command in the directory of the repo:
 
@@ -40,22 +66,21 @@ python3 bot.py
 
 If the config.json file doesn't exist yet, it will be generated. 
 
-Replace each 'x' with the correct values to log into Reddit and Twitter, then run the previous command again. If everything was installed correctly, the program should state the correctly found Reddit thread, as well as list all of the tweets found, and then post the tweets found to the reddit thread.
+Replace each 'x' with the correct values to log into Reddit and Twitter. Adjust the rest of the config to suit needs. For reference, see 'Config' section above. Once done, run the *python3 bot.py* command again. If everything was installed correctly, the program should state the found Reddit thread, as well as list all of the tweets found, and then post the tweets found to the reddit thread.
 
 This command/program will need to be ran again each time it is used.
 
 ## Contributing
-Feel free to contribute. When submitting pull requests, include details on changes made.
+Feel free to contribute. When submitting pull requests, document changes made and why. If the changes heavily alter the program itself, fork if you wish to publish your changes publicly.
 
 ## Future Plans
-- Changing data source information from hardcode to config.json to make program more usable for a variety of purposes
 - Adding prompts for user confirmation for various events in the program to allow user to ensure that the bot is operating correctly
 
 ## Examples
-None yet.
+[u/DRWProspectBot](https://reddit.com/r/DRWProspectBot)
 
 ## Authors
-* **Randy Kinne** - *All Work* - [randykinne](https://github.com/randykinne)
+* **Randy Kinne** - *All Work* - [GitHub](https://github.com/randykinne)
 
 ## License
 Licensed under the [GNU General Public License v3.0](LICENSE).
