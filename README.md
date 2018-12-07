@@ -14,6 +14,7 @@ python3 -m pip install --upgrade pip
 ```
 
 pip3 will now be updated to version 18.1
+
 For more information or more help on using pip3, reference [Using pip3 to install Python modules](https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules)
 
 Now install the necessary modules individually (manually) or all at once with the following commands:
