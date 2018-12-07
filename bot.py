@@ -91,7 +91,7 @@ def log(message, verbose):
 ## @return     { Returns whether the user wants to complete the action or not }
 ##
 def confirm(message):
-	answer = input("Do you want to " + message + "? y/n")
+	answer = input("Do you want to " + message + "? y/n: ")
 	if (answer == "y" or answer == "yes"):
 		return True
 	elif (answer == "n" or answer == "no"):
@@ -107,10 +107,13 @@ def confirm(message):
 def main():
 
 	# Attempt to get the config, see function readConfig() above
-	config = readConfig()
+	try:
+		config = readConfig()
+	except:
+		log("An error occured while attempting to read the config. Please check config values and try again.")
 
 	verbose = config['verbose']
-	confirm = config['confirm_actions']
+	confirm_actions = config['confirm_actions']
 	subreddit_name = config['subreddit_name']
 	subreddit_sort = config['subreddit_sort_by']
 	author_name = config['author_name']
@@ -146,26 +149,48 @@ def main():
 		tweet_mode='extended')
 
 	# set the subreddit name for praw
-	subreddit = reddit.subreddit(subreddit_name)
+	if (confirm_actions):
+		if (confirm("set subreddit name to \'" + subreddit_name + "\'")):
+			subreddit = reddit.subreddit(subreddit_name)
+		else: 
+			subreddit_name = input("Enter the name of the subreddit: ")
+			subreddit = reddit.subreddit(subreddit_name)
+	else:
+		subreddit = reddit.subreddit(subreddit_name)
+	
 
 	posts = subreddit.hot(limit=1)
 
 	sort_by = config['subreddit_sort_by']
 
-	if (sort_by == '0'):
+	if (sort_by == 0):
 		posts = subreddit.hot(limit=5)
-	elif (sort_by == '1'):
+	elif (sort_by == 1):
 		posts = subreddit.new(limit=5)
-	elif (sort_by == '2'): 
+	elif (sort_by == 2): 
 		posts = subreddit.top(limit=5)
 	else:
 		log("Invalid config! Please change subreddit_sort_by to 0, 1, or 2", True)
 
+	subm = ""
 
 	for submission in posts:
 		if (submission.author == author_name):
 			# print name of the submission to ensure the name is correct
-	 		log("Found submission titled: " + submission.title, verbose)
+			if (confirm_actions):
+				if (confirm("set submission title to \'" + submission.title + "\'")):
+					subm = submission
+					log("Found submission titled: " + submission.title, verbose)
+				else: log("Submission not found", True)
+			else:
+				subm = submission
+				log("Found submission titled: " + submission.title, verbose)
+
+
+	if (subm.author != author_name):
+		log("Submission author not found. Edit the config and try again.", True)
+		exit()
+			
 
 	# get the user timeline from twitter user
 	updates = twitterApi.GetUserTimeline(screen_name=twitter_name, count=twitter_count)
@@ -173,7 +198,7 @@ def main():
 	log("=================== MESSAGE ===================", verbose)
 
 	# preface message with yesterday's results so users know which day the scores happened on, then newline for formatting
-	message = (message_prefix + "\n\n")
+	message = (message_prefix + "\n")
 
 	# get every update from the twitter user
 	for x in updates:
@@ -188,7 +213,7 @@ def main():
 
 	# after all tweets have been added to message, add this to bottom of message posted to reddit so users have more information about this project as well as the data source
 	for i in range(len(message_suffix)):
-		message = message + str(message_suffix[i]) + "\n"
+		message = message + str(message_suffix[i]) + "\n\n"
 
 	# print the message to the screen so the user sees what will be posted on Reddit
 	log(message, verbose)
@@ -198,8 +223,17 @@ def main():
 	if (config['testing']):
 		log("Since this is just a test, we won't actually post it on Reddit.", True)
 	else:
-		submission.reply(message)
-		log("Message posted on Reddit.", verbose)
+		try:
+			if (confirm_actions): 
+				if (confirm("post message on Reddit")):
+					subm.reply(message)
+				else: log("Message not posted on Reddit.", True)
+			else:
+				subm.reply(message)
+			
+			log("Message posted on Reddit.", verbose)
+		except:
+			log("An error occured. There was a problem submitting the message to Reddit.", True)
 	
 # this is necessary, I once forgot this and nothing happened when I ran the program, spent several hours figuring out why
 # pretty self explanatory though
