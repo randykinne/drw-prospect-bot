@@ -117,7 +117,6 @@ def main():
 	message_prefix = config['message_prefix']
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
-	testing = config['testing']
 
 	# verbose messages for user
 	log("Loaded Json Config Data", verbose)
