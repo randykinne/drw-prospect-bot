@@ -34,7 +34,7 @@ def readConfig():
 		config = {
 			"Reddit": {
 				"subreddit": "subreddit",
-				"sort_by": "0",
+				"sort_by": 0,
 				"author": "name",
 				"auth": {
 					"client_id": "X", 
