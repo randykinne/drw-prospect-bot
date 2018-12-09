@@ -19,20 +19,16 @@ from datetime import datetime
 ## @return     { Returns the config file }
 ##
 def readConfig():
-
 	# if 'config.json' file exists in same path as this file, open it
 	if (os.path.isfile('config.json')):
-
 		# open config file, return the data loaded as json
 		with open('config.json', 'r') as f:
 			data = json.load(f)
 			f.close()
-
 			return data
 
 	# if 'config.json' file does not exist
 	else:
-
 		# create basic outline for file 
 		# need to format this better, it's a mess
 		config = {
@@ -105,7 +101,6 @@ def confirm(message):
 ## @return 	   { None }
 ##
 def main():
-
 	# Attempt to get the config, see function readConfig() above
 	try:
 		config = readConfig()
@@ -123,7 +118,6 @@ def main():
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
 	testing = config['testing']
-
 
 	# verbose messages for user
 	log("Loaded Json Config Data", verbose)
@@ -151,7 +145,6 @@ def main():
 			subreddit = reddit.subreddit(subreddit_name)
 	else:
 		subreddit = reddit.subreddit(subreddit_name)
-	
 
 	posts = subreddit.hot(limit=1)
 	if (sort_by == 0):
@@ -164,7 +157,6 @@ def main():
 		log("Invalid config! Please change subreddit_sort_by to 0, 1, or 2", True)
 
 	subm = ""
-
 	for submission in posts:
 		if (submission.author == author_name):
 			# print name of the submission to ensure the name is correct
@@ -181,7 +173,6 @@ def main():
 	if (subm.author != author_name):
 		log("Submission author not found. Edit the config and try again.", True)
 		exit()
-			
 
 	# get the user timeline from twitter user
 	updates = twitterApi.GetUserTimeline(screen_name=twitter_name, count=twitter_count)
@@ -229,7 +220,6 @@ def main():
 # this is necessary, I once forgot this and nothing happened when I ran the program, spent several hours figuring out why
 # pretty self explanatory though
 main()
-
 
 ##
 ## eop
