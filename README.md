@@ -80,7 +80,7 @@ Feel free to contribute. When submitting pull requests, document changes made an
 
 ## Authors
 * **Randy Kinne** - *All Work* - [GitHub](https://github.com/randykinne)
-* **Evan Lock** - *Contributor* - [GitHub[(https://github.com/elock37)
+* **Evan Lock** - *Contributor* - [GitHub](https://github.com/elock37)
 
 ## License
 Licensed under the [GNU General Public License v3.0](LICENSE).
