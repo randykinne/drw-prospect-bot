@@ -184,7 +184,7 @@ def main():
 	# get every update from the twitter user
 	for x in updates:
 		# format the date into a format python can recognize
-		d = datetime.strptime(x.created_at,'%a %b %d %H:%M:%S %z %Y');
+		d = datetime.strptime(x.created_at,'%a %b %d %H:%M:%S %z %Y')
 		# check if the date was the same as today, necessary to ensure that you aren't getting tweets from the past
 		if (d.date() == datetime.today().date()):
 			# append the tweet to the message while replacing #RedWings with a space
