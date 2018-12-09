@@ -54,6 +54,7 @@ Change the config to fit your needs.
 | message_suffix       | [str] | Suffix to attach to the twitter updates the bot posts on Reddit.| ["suffix_1", "suffix_2"] |
 | subreddit_name       | str | Name of subreddit to search for posts                | subreddit |
 | subreddit_sort_by    | int | 0 for hot, 1 for new, 2 for top                      | 0  |
+| testing              | boo | When enabled, testing prevents the bot from actually posting to Reddit| True | 
 | twitter_count        | int | Number of tweets to get from Twitter. Max limit of time is 30 regardless of the number of tweets getting | 15   |
 | twitter_name         | str | Username of twitter account to pull tweets from      | twitter_name |
 | verbose              | boo | Boolean value of whether to print updates to console. Recommended: True| True |
@@ -74,14 +75,12 @@ This command/program will need to be ran again each time it is used.
 ## Contributing
 Feel free to contribute. When submitting pull requests, document changes made and why. If the changes heavily alter the program itself, fork if you wish to publish your changes publicly.
 
-## Future Plans
-- Adding prompts for user confirmation for various events in the program to allow user to ensure that the bot is operating correctly
-
 ## Examples
 [u/DRWProspectBot](https://reddit.com/r/DRWProspectBot)
 
 ## Authors
 * **Randy Kinne** - *All Work* - [GitHub](https://github.com/randykinne)
+* **Evan Lock** - *Contributor* - [GitHub[(https://github.com/elock37)
 
 ## License
 Licensed under the [GNU General Public License v3.0](LICENSE).
