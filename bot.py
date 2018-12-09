@@ -105,7 +105,7 @@ def main():
 	try:
 		config = readConfig()
 	except:
-		log("An error occured while attempting to read the config. Please check config values and try again.")
+		log("An error occured while attempting to read the config. Please check config values and try again.", True)
 
 	verbose = config['verbose']
 	confirm_actions = config['confirm_actions']
