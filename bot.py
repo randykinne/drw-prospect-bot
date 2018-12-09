@@ -19,47 +19,46 @@ from datetime import datetime
 ## @return     { Returns the config file }
 ##
 def readConfig():
-
 	# if 'config.json' file exists in same path as this file, open it
 	if (os.path.isfile('config.json')):
-
 		# open config file, return the data loaded as json
 		with open('config.json', 'r') as f:
 			data = json.load(f)
 			f.close()
-
 			return data
 
 	# if 'config.json' file does not exist
 	else:
-
 		# create basic outline for file 
 		# need to format this better, it's a mess
 		config = {
-		"Reddit": [{"client_id": "X", 
-		"client_secret": "X", 
-		"username": "X", 
-		"password": "X" }], 
-
-		"Twitter": [{"access_key": "X", 
-		"access_secret": "X", 
-		"consumer_key": "X", 
-		"consumer_secret": "X"}],
-
-		"subreddit_name": "subreddit",
-		"subreddit_sort_by": "0",
-		"author_name": "name",
-
-		"twitter_name": "twitter_name",
-		"twitter_count": "15",
-
-		"message_prefix": "message_prefix",
-		"message_suffix": ("suffix_1", "suffix_2"),
-		"message_replace": ("word", "replaceWith"),
-
-		"verbose": "True",
-		"confirm_actions": "True",
-		"testing": "True"
+			"Reddit": {
+				"subreddit": "subreddit",
+				"sort_by": 0,
+				"author": "name",
+				"auth": {
+					"client_id": "X", 
+					"client_secret": "X", 
+					"username": "X", 
+					"password": "X" 
+				}
+			},
+			"Twitter": {
+				"name": "twitter_name",
+				"tweet_count": "15",
+				"auth": {
+					"access_key": "X", 
+					"access_secret": "X", 
+					"consumer_key": "X", 
+					"consumer_secret": "X"
+				}
+			},
+			"message_prefix": "message_prefix",
+			"message_suffix": ("suffix_1", "suffix_2"),
+			"message_replace": ("word", "replaceWith"),
+			"verbose": "True",
+			"confirm_actions": "True",
+			"testing": "True"
 		}
 
 		# create the file, indent=4 and sort_keys=True to add readability to the json file
@@ -102,47 +101,38 @@ def confirm(message):
 ## @return 	   { None }
 ##
 def main():
-
 	# Attempt to get the config, see function readConfig() above
 	try:
 		config = readConfig()
 	except:
-		log("An error occured while attempting to read the config. Please check config values and try again.")
+		log("An error occured while attempting to read the config. Please check config values and try again.", True)
 
 	verbose = config['verbose']
 	confirm_actions = config['confirm_actions']
-	subreddit_name = config['subreddit_name']
-	subreddit_sort = config['subreddit_sort_by']
-	author_name = config['author_name']
-	twitter_name = config['twitter_name']
-	twitter_count = config['twitter_count']
+	subreddit_name = config['Reddit']['subreddit']
+	sort_by = config['Reddit']['sort_by']
+	author_name = config['Reddit']['author']
+	twitter_name = config['Twitter']['name']
+	twitter_count = config['Twitter']['tweet_count']
 	message_prefix = config['message_prefix']
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
-	testing = config['testing']
-
 
 	# verbose messages for user
 	log("Loaded Json Config Data", verbose)
 
-	# declare redditInfo to make it easier to get info from the config
-	redditInfo = config['Reddit'][0]
-
 	# set praw reddit user info with the info from the config
-	reddit = praw.Reddit(user_agent=redditInfo['username'],
-			client_id=redditInfo["client_id"],
-			client_secret=redditInfo["client_secret"],
-			username=redditInfo["username"],
-			password=redditInfo["password"])
-
-	# declare twitterInfo to make it easier to get info from the config
-	twitterInfo = config['Twitter'][0]
+	reddit = praw.Reddit(user_agent=config['Reddit']['auth']['username'],
+			client_id=config['Reddit']['auth']["client_id"],
+			client_secret=config['Reddit']['auth']["client_secret"],
+			username=config['Reddit']['auth']["username"],
+			password=config['Reddit']['auth']["password"])
 
 	# set python-twitter user info with the info from the config
-	twitterApi = twitter.Api(consumer_key=twitterInfo['consumer_key'],
-		consumer_secret=twitterInfo['consumer_secret'],
-		access_token_key=twitterInfo['access_key'],
-		access_token_secret=twitterInfo['access_secret'],
+	twitterApi = twitter.Api(consumer_key=config['Twitter']['auth']['consumer_key'],
+		consumer_secret=config['Twitter']['auth']['consumer_secret'],
+		access_token_key=config['Twitter']['auth']['access_key'],
+		access_token_secret=config['Twitter']['auth']['access_secret'],
 		tweet_mode='extended')
 
 	# set the subreddit name for praw
@@ -154,12 +144,8 @@ def main():
 			subreddit = reddit.subreddit(subreddit_name)
 	else:
 		subreddit = reddit.subreddit(subreddit_name)
-	
 
 	posts = subreddit.hot(limit=1)
-
-	sort_by = config['subreddit_sort_by']
-
 	if (sort_by == 0):
 		posts = subreddit.hot(limit=5)
 	elif (sort_by == 1):
@@ -170,7 +156,6 @@ def main():
 		log("Invalid config! Please change subreddit_sort_by to 0, 1, or 2", True)
 
 	subm = ""
-
 	for submission in posts:
 		if (submission.author == author_name):
 			# print name of the submission to ensure the name is correct
@@ -187,7 +172,6 @@ def main():
 	if (subm.author != author_name):
 		log("Submission author not found. Edit the config and try again.", True)
 		exit()
-			
 
 	# get the user timeline from twitter user
 	updates = twitterApi.GetUserTimeline(screen_name=twitter_name, count=twitter_count)
@@ -200,7 +184,7 @@ def main():
 	# get every update from the twitter user
 	for x in updates:
 		# format the date into a format python can recognize
-		d = datetime.strptime(x.created_at,'%a %b %d %H:%M:%S %z %Y');
+		d = datetime.strptime(x.created_at,'%a %b %d %H:%M:%S %z %Y')
 		# check if the date was the same as today, necessary to ensure that you aren't getting tweets from the past
 		if (d.date() == datetime.today().date()):
 			# append the tweet to the message while replacing #RedWings with a space
@@ -235,7 +219,6 @@ def main():
 # this is necessary, I once forgot this and nothing happened when I ran the program, spent several hours figuring out why
 # pretty self explanatory though
 main()
-
 
 ##
 ## eop

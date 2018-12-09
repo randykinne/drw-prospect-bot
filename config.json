@@ -1,21 +1,25 @@
 {
-    "Reddit": [
-        {
+    "Reddit": {
+        "auth": {
             "client_id": "X",
             "client_secret": "X",
             "password": "X",
             "username": "X"
-        }
-    ],
-    "Twitter": [
-        {
+        },
+        "author": "name",
+        "sort_by": 0,
+        "subreddit": "subreddit"
+    },
+    "Twitter": {
+        "auth": {
             "access_key": "X",
             "access_secret": "X",
             "consumer_key": "X",
             "consumer_secret": "X"
-        }
-    ],
-    "author_name": "name",
+        },
+        "name": "twitter_name",
+        "tweet_count": "15"
+    },
     "confirm_actions": "True",
     "message_prefix": "message_prefix",
     "message_replace": [
@@ -26,10 +30,6 @@
         "suffix_1",
         "suffix_2"
     ],
-    "subreddit_name": "subreddit",
-    "subreddit_sort_by": "0",
-    "testing": "False",
-    "twitter_count": "15",
-    "twitter_name": "twitter_account",
+    "testing": "True",
     "verbose": "True"
 }
