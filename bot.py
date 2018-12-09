@@ -36,30 +36,33 @@ def readConfig():
 		# create basic outline for file 
 		# need to format this better, it's a mess
 		config = {
-		"Reddit": [{"client_id": "X", 
-		"client_secret": "X", 
-		"username": "X", 
-		"password": "X" }], 
-
-		"Twitter": [{"access_key": "X", 
-		"access_secret": "X", 
-		"consumer_key": "X", 
-		"consumer_secret": "X"}],
-
-		"subreddit_name": "subreddit",
-		"subreddit_sort_by": "0",
-		"author_name": "name",
-
-		"twitter_name": "twitter_name",
-		"twitter_count": "15",
-
-		"message_prefix": "message_prefix",
-		"message_suffix": ("suffix_1", "suffix_2"),
-		"message_replace": ("word", "replaceWith"),
-
-		"verbose": "True",
-		"confirm_actions": "True",
-		"testing": "True"
+			"Reddit": {
+				"subreddit": "subreddit",
+				"sort_by": "0",
+				"author": "name",
+				"auth": {
+					"client_id": "X", 
+					"client_secret": "X", 
+					"username": "X", 
+					"password": "X" 
+				}
+			},
+			"Twitter": {
+				"name": "twitter_name",
+				"tweet_count": "15",
+				"auth": {
+					"access_key": "X", 
+					"access_secret": "X", 
+					"consumer_key": "X", 
+					"consumer_secret": "X"
+				}
+			},
+			"message_prefix": "message_prefix",
+			"message_suffix": ("suffix_1", "suffix_2"),
+			"message_replace": ("word", "replaceWith"),
+			"verbose": "True",
+			"confirm_actions": "True",
+			"testing": "True"
 		}
 
 		# create the file, indent=4 and sort_keys=True to add readability to the json file
@@ -111,11 +114,11 @@ def main():
 
 	verbose = config['verbose']
 	confirm_actions = config['confirm_actions']
-	subreddit_name = config['subreddit_name']
-	subreddit_sort = config['subreddit_sort_by']
-	author_name = config['author_name']
-	twitter_name = config['twitter_name']
-	twitter_count = config['twitter_count']
+	subreddit_name = config['Reddit']['subreddit']
+	sort_by = config['Reddit']['sort_by']
+	author_name = config['Reddit']['author']
+	twitter_name = config['Twitter']['name']
+	twitter_count = config['Twitter']['tweet_count']
 	message_prefix = config['message_prefix']
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
@@ -125,24 +128,18 @@ def main():
 	# verbose messages for user
 	log("Loaded Json Config Data", verbose)
 
-	# declare redditInfo to make it easier to get info from the config
-	redditInfo = config['Reddit'][0]
-
 	# set praw reddit user info with the info from the config
-	reddit = praw.Reddit(user_agent=redditInfo['username'],
-			client_id=redditInfo["client_id"],
-			client_secret=redditInfo["client_secret"],
-			username=redditInfo["username"],
-			password=redditInfo["password"])
-
-	# declare twitterInfo to make it easier to get info from the config
-	twitterInfo = config['Twitter'][0]
+	reddit = praw.Reddit(user_agent=config['Reddit']['auth']['username'],
+			client_id=config['Reddit']['auth']["client_id"],
+			client_secret=config['Reddit']['auth']["client_secret"],
+			username=config['Reddit']['auth']["username"],
+			password=config['Reddit']['auth']["password"])
 
 	# set python-twitter user info with the info from the config
-	twitterApi = twitter.Api(consumer_key=twitterInfo['consumer_key'],
-		consumer_secret=twitterInfo['consumer_secret'],
-		access_token_key=twitterInfo['access_key'],
-		access_token_secret=twitterInfo['access_secret'],
+	twitterApi = twitter.Api(consumer_key=config['Twitter']['auth']['consumer_key'],
+		consumer_secret=config['Twitter']['auth']['consumer_secret'],
+		access_token_key=config['Twitter']['auth']['access_key'],
+		access_token_secret=config['Twitter']['auth']['access_secret'],
 		tweet_mode='extended')
 
 	# set the subreddit name for praw
@@ -157,9 +154,6 @@ def main():
 	
 
 	posts = subreddit.hot(limit=1)
-
-	sort_by = config['subreddit_sort_by']
-
 	if (sort_by == 0):
 		posts = subreddit.hot(limit=5)
 	elif (sort_by == 1):
