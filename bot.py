@@ -1,5 +1,5 @@
 #
-# twitter-subreddit-bot v1.0 (12/7/2018) 4:07 PM EST
+# twitter-subreddit-bot v1.1 (12/7/2018) 4:07 PM EST
 # A twitter-subreddit bot based on DRWProspectsBot
 #
 # by Randy Kinne
