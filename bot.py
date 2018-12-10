@@ -230,17 +230,19 @@ def main():
 		try:
 			if (confirm_actions):
 				if (confirm("post message on Reddit")):
-					subm.reply(message)
+					submission_.reply(message)
 				else:
 					log("Message not posted on Reddit.", True)
 			else:
-				subm.reply(message)
+				submission_.reply(message)
 			log("Message posted on Reddit.", verbose)
-		except:
+		except Exception as exception:
 			log(
-				"An error occured. There was a problem submitting the message to Reddit.",
+				"An error occured. There was a problem submitting the message to Reddit."
+				"Exception: " + repr(exception),
 				True
 				)
+
 
 
 main()
