@@ -196,7 +196,7 @@ def main():
 	log("=================== MESSAGE ===================", verbose)
 
 	# Add prefix to message and newline for message readability.
-	message = (message_prefix + "\n")
+	message = (message_prefix + "\n\n")
 
 	# Get every update from the twitter user.
 	for tweet in updates:
