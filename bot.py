@@ -183,7 +183,7 @@ def main():
 				submission_ = submission
 				log("Found submission titled: " + submission.title, verbose)
 
-	if (submission is str):
+	if (submission_.author != author_name):
 		log("Submission author not found. Edit the config and try again.", True)
 		exit()
 
@@ -227,20 +227,12 @@ def main():
 		try:
 			if (confirm_actions):
 				if (confirm("post message on Reddit")):
-					if (submission_ is not str):
-						submission_.reply(message)
-					else:
-						log("Submission not found.", True)
+					submission_.reply(message)
 				else:
 					log("Message not posted on Reddit.", True)
 			else:
-				if (submission_ is not str):
-					submission_.reply(message)
-				else:
-					log("Submission not found.", True)
-
+				submission_.reply(message)
 			log("Message posted on Reddit.", verbose)
-
 		except Exception as exception:
 			log(
 				"An error occured. There was a problem submitting the message to Reddit."
