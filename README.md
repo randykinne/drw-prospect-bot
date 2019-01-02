@@ -76,10 +76,10 @@ This command/program will need to be ran again each time it is used.
 Feel free to contribute. When submitting pull requests, document changes made and why. If the changes heavily alter the program itself, fork if you wish to publish your changes publicly.
 
 ## Examples
-[u/DRWProspectBot](https://reddit.com/r/DRWProspectBot)
+[u/DRWProspectBot](https://reddit.com/u/DRWProspectBot)
 
 ## Authors
-* **Randy Kinne** - *All Work* - [GitHub](https://github.com/randykinne)
+* **Randy Kinne** - *Creator* - [GitHub](https://github.com/randykinne)
 * **Evan Lock** - *Contributor* - [GitHub](https://github.com/elock37)
 
 ## License
