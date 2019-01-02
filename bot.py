@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# twitter-subreddit-bot v1.1 (12/10/2018) 7:29 PM EST
+# twitter-subreddit-bot v1.1 (1/2/2019) 12:27 PM EST
 # A twitter-subreddit bot based on DRWProspectsBot.
 #
 # by Randy Kinne
@@ -22,13 +22,11 @@ def read_config():
 	@return     {<Dict>}  ( Returns the configuration as dict )
 	"""
 	if (os.path.isfile("config.json")):
-		# open config file, return the data loaded as json
 		with open("config.json", "r") as f:
 			data = json.load(f)
 			f.close()
 			return data
 	else:
-		# create basic outline for file
 		config = {
 			"Reddit": {
 				"subreddit": "subreddit",
@@ -63,8 +61,6 @@ def read_config():
 		with open('config.json', 'w') as secret_info:
 			json.dump(config, secret_info, indent=4, sort_keys=True)
 
-		# Tell the user that the config was not found.
-		# Exit program.
 		log("No configuration found. Please edit config.json and try again.", True)
 		exit()
 
@@ -74,7 +70,6 @@ def log(message, verbose):
 
 	@param      {<String>}  message  The message to console.
 	@param      {<Boolean>}  verbose  Print message to console or not.
-	@return     {<None>}  ( None )
 	"""
 	if (verbose):
 		print(message)
@@ -83,8 +78,8 @@ def log(message, verbose):
 def confirm(message):
 	"""Confirmation dialogue to console.
 
-	@param      {<String>}  message  The message asked to console
-	@return     {<Boolean>}  ( Returns whether the user wants to complete the action )
+	@param      {String}  message  The message asked to console
+	@return     {Boolean}  Returns whether the user wants to complete the action or not
 	"""
 	answer = input("Do you want to " + message + "? y/n: ")
 	if (answer == "y" or answer == "yes"):
@@ -98,16 +93,10 @@ def confirm(message):
 #
 # @brief      Main function
 #
-# @return 	   { None }
-#
-
 
 def main():
 	"""Main function of the program.
-
-	@return     {<None>}  ( None )
-	"""
-	# Attempt to get the config, see function readConfig() above.
+    """
 	try:
 		config = read_config()
 	except:
@@ -128,10 +117,8 @@ def main():
 	message_suffix = config['message_suffix']
 	message_replace = config['message_replace']
 
-	# Let console know the config data was loaded correctly.
 	log("Loaded Json Config Data", verbose)
 
-	# Set praw reddit user info with the info from the config.
 	reddit = praw.Reddit(
 		user_agent=config['Reddit']['auth']['username'],
 		client_id=config['Reddit']['auth']["client_id"],
@@ -140,7 +127,6 @@ def main():
 		password=config['Reddit']['auth']["password"]
 		)
 
-	# Set python-twitter user info with the info from the config.
 	twitterApi = twitter.Api(
 		consumer_key=config['Twitter']['auth']['consumer_key'],
 		consumer_secret=config['Twitter']['auth']['consumer_secret'],
@@ -187,7 +173,6 @@ def main():
 		log("Submission author not found. Edit the config and try again.", True)
 		exit()
 
-	# Get the user timeline from twitter user.
 	updates = twitterApi.GetUserTimeline(
 		screen_name=twitter_name,
 		count=twitter_count
@@ -198,12 +183,9 @@ def main():
 	# Add prefix to message and newline for message readability.
 	message = (message_prefix + "\n\n")
 
-	# Get every update from the twitter user.
 	for tweet in updates:
 		# Format the date into a format python can recognize.
 		tweet_date = datetime.strptime(tweet.created_at, '%a %b %d %H:%M:%S %z %Y')
-		# Check if the date was the same as today.
-		# Necessary to ensure that you aren't getting tweets from the past.
 		if (tweet_date.date() == datetime.today().date()):
 			# Append the tweet to the message while replacing text.
 			# Newlines for formatting.
