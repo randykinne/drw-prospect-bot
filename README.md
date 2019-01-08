@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7805c1472547daf0f0e1/maintainability)](https://codeclimate.com/github/randykinne/twitter-subreddit-bot/maintainability)
+
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 # twitter-subreddit-bot
