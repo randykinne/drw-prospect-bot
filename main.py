@@ -1,9 +1,7 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
 
 from datetime import datetime
 import json
-import os.path
 import time
 import base64
 
@@ -13,7 +11,7 @@ import twitter
 
 def post(event, context) -> None:
         # event is populated by data from cloud pub/sub message
-        # in this case, the data is the config
+        # in this case, the data is the config ()
     try:
         config = json.loads(base64.b64decode(event['data']).decode('utf-8'))
     except Exception as ex:
@@ -49,7 +47,7 @@ def post(event, context) -> None:
     )
 
     subreddit = reddit.subreddit(subreddit_name)
-    # Refactor # to something else
+    # Refactor number to something more descriptive
     posts = subreddit.hot(limit=1)
     if sort_by == 0:
         posts = subreddit.hot(limit=5)
@@ -60,40 +58,37 @@ def post(event, context) -> None:
     else:
         print("Invalid config! Please change subreddit_sort_by to 0, 1, or 2")
 
-    submission_ = ""
-    for submission in posts:
-        if submission.author == author_name:
-            submission_ = submission
-            print("Found submission titled: " + submission.title)
+    # Of all the posts on the subreddit, we need to find the daily thread
+    submission = ""
+    for post in posts:
+        if post.author == author_name:
+            submission = post
+            print("Found post titled: " + post.title)
 
-    if submission_.author != author_name:
+    if submission.author != author_name:
         print("Submission author not found. Edit the config and try again.")
         exit()
 
     updates = twitterApi.GetUserTimeline(
         screen_name=twitter_name, count=twitter_count)
 
-    # Add prefix to message and newline for message readability.
     message = message_prefix + "\n\n"
 
     print(len(updates) + " tweets found from " + twitter_name)
 
+    # We should probably filter map reduce lambda instead for extra coolness
+    # think of all the buzzwords!
     for tweet in updates:
-        # Format the date into a format python can recognize.
         tweet_date = datetime.strptime(
             tweet.created_at, "%a %b %d %H:%M:%S %z %Y")
         if tweet_date.date() == datetime.today().date():
-            # Append the tweet to the message while replacing text.
-            # Newlines for formatting.
             message = message + (str(tweet.full_text) + "\n\n").replace(
                 str(message_replace[0]), str(message_replace[1])
             )
 
-    # Add suffix to message.
     for i in range(len(message_suffix)):
         message = message + str(message_suffix[i]) + "\n\n"
 
-    # Finally post the message on Reddit if not testing.
     if testing:
         print("Since this is just a test, we won't actually post it on Reddit.")
         print(message)
