@@ -94,7 +94,7 @@ def post(event, context) -> None:
         print(message)
     else:
         try:
-            submission_.reply(message)
+            submission.reply(message)
             print("Message posted on Reddit.")
         except Exception as exception:
             print(
