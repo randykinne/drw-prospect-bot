@@ -74,7 +74,7 @@ def post(event, context) -> None:
 
     message = message_prefix + "\n\n"
 
-    print(len(updates) + " tweets found from " + twitter_name)
+    print(str(len(updates)) + " tweets found from " + twitter_name)
 
     # We should probably filter map reduce lambda instead for extra coolness
     # think of all the buzzwords!
